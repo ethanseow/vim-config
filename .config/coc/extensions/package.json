@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "coc-json": ">=1.7.0",
+    "coc-tsserver": ">=2.1.0",
+    "coc-clangd": ">=0.27.0",
+    "coc-vetur": ">=1.2.5",
+    "@yaegassy/coc-volar": ">=0.25.11",
+    "@yaegassy/coc-volar-tools": ">=0.3.0",
+    "coc-tailwindcss": ">=0.7.0"
+  }
+}
