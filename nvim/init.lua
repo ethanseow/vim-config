@@ -5,6 +5,7 @@ vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.o.softtabstop = 4
 vim.o.mouse = "a"
+
 -- vim-plug
 vim.cmd([[call plug#begin()]])
 vim.cmd([[Plug 'neoclide/coc.nvim', {'branch': 'release'}]])
@@ -20,9 +21,17 @@ vim.cmd([[Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' } ]])
 vim.cmd([[Plug 'nvim-lua/plenary.nvim']])
 vim.cmd([[Plug 'windwp/nvim-autopairs']])
 vim.cmd([[Plug 'nvim-treesitter/nvim-treesitter']])
+vim.cmd([[Plug 'sainnhe/sonokai']])
 vim.cmd([[call plug#end()]])
+
 -- Colorscheme and Airline theme
-vim.g.airline_theme = "angr"
+vim.g.airline_theme = "sonokai"
+vim.cmd([[
+let g:sonokai_style = 'andromeda'
+let g:sonokai_better_performance = 1
+
+colorscheme sonokai
+]])
 
 -- ctrl+s
 vim.keymap.set("n", "<C-s>", ":update<CR>", { noremap = true, silent = true })
@@ -137,7 +146,7 @@ vim.o.re = 0
 -- Treesitter
 require("nvim-treesitter.configs").setup({
 	-- A list of parser names, or "all" (the five listed parsers should always be installed)
-	ensure_installed = { "c", "lua", "vim", "vimdoc", "query" },
+	ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "javascript", "typescript", "html" },
 
 	-- Install parsers synchronously (only applied to `ensure_installed`)
 	sync_install = false,
@@ -149,22 +158,10 @@ require("nvim-treesitter.configs").setup({
 	-- List of parsers to ignore installing (or "all")
 	ignore_install = {},
 
-	---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
-	-- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
-
 	highlight = {
 		enable = true,
-
-		-- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
-		-- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
-		-- the name of the parser)
-		-- list of language that will be disabled
-		disable = {},
-
-		-- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-		-- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-		-- Using this option may slow down your editor, and you may see some duplicate highlights.
-		-- Instead of true it can also be a list of languages
+		disable = { "" },
 		additional_vim_regex_highlighting = false,
+		autotag = { enable = true },
 	},
 })
