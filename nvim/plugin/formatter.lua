@@ -1,7 +1,7 @@
 -- Utilities for creating configurations
 local util = require("formatter.util")
 function prettier()
-	local p = require("formatter.filetypes.javascript").prettier
+	local p = require("formatter.filetypes.javascript").prettier()
 	table.insert(p.args, "--tab-width")
 	table.insert(p.args, "4")
 	return p
@@ -20,10 +20,10 @@ require("formatter").setup({
 			require("formatter.filetypes.c").clangformat,
 		},
 		javascript = {
-			-- require("formatter.filetypes.javascript").prettier
+			prettier,
 		},
 		javascriptreact = {
-			-- require("formatter.filetypes.javascriptreact").prettier,
+			prettier,
 		},
 		["*"] = {
 			require("formatter.filetypes.any").remove_trailing_whitespace,
