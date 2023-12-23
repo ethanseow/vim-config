@@ -1,9 +1,13 @@
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.autoindent = true
+vim.o.smartindent = true
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.o.softtabstop = 4
+vim.o.expandtab = true
+vim.o.copyindent = true
+
 vim.o.mouse = "a"
 
 -- vim-plug
@@ -112,7 +116,7 @@ local opts = { silent = true, noremap = true, expr = true, replace_keycodes = fa
 vim.keymap.set(
 	"i",
 	"<TAB>",
-	'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()',
+	'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<C-f>" : coc#refresh()',
 	opts
 )
 vim.keymap.set("i", "<S-TAB>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
