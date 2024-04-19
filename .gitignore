@@ -1,0 +1,9 @@
+# Ignore all folders
+*/
+!nvim/
+!tmux/
+
+# Ignore all files except .gitignore
+*
+!.gitignore
+
