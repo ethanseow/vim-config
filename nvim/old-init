@@ -1,0 +1,98 @@
+:set number
+:set relativenumber
+:set autoindent
+:set tabstop=4
+:set shiftwidth=4
+:set smarttab
+:set softtabstop=4
+:set mouse=a
+
+" vim-plug
+call plug#begin()
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'mhartington/formatter.nvim'
+Plug 'https://github.com/vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'https://github.com/preservim/nerdtree'
+Plug 'wojciechkepka/vim-github-dark'
+Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+call plug#end()
+
+lua require("toggleterm").setup()
+
+inoremap ( ()<Esc>i
+inoremap { {}<Esc>i
+inoremap {<CR> {<CR>}<Esc>O
+inoremap [ []<Esc>i
+inoremap < <><Esc>i
+inoremap ' ''<Esc>i
+inoremap " ""<Esc>i
+
+" By applying the mappings this way you can pass a count to your
+" mapping to open a specific window.
+" For example: 2<C-t> will open terminal 2
+nnoremap <silent><C-i> <Cmd>exe v:count1 . "ToggleTerm"<CR>
+
+tnoremap <silent><C-i> <Cmd>exe v:count1 . "ToggleTerm"<CR>
+tnoremap <Esc> <C-\><C-N>
+tmap <silent><C-b> <Esc> :NERDTreeToggle<CR>
+
+nnoremap <silent><C-b> :NERDTreeToggle<CR> :wincmd p<CR>
+inoremap <silent><C-b> <Esc>:NERDTreeToggle<CR> :wincmd p<CR>
+
+" Source Vim configuration file and install plugins
+nnoremap <silent><leader>1 :source ~/.config/nvim/init.vim \| :PlugInstall<CR>
+
+" fzf :GFile
+nnoremap <C-p> :GFiles<CR>
+
+let g:NERDTreeDirArrowExpandable="+"
+let g:NERDTreeDirArrowCollapsible="~"
+
+colorscheme ghdark
+let g:airline_theme="simple"
+
+" Coc - use <tab> to trigger completion and navigate to the next complete item
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+" Coc - remap <cr> to make it confirm completion
+inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+
+" Formatter - format on save
+augroup FormatAutogroup
+  autocmd!
+  autocmd BufWritePost * FormatWrite
+augroup END
+
+" WSL yank support
+let s:clip = '/mnt/c/Windows/System32/clip.exe'  " change this path according to your mount point
+if executable(s:clip)
+    augroup WSLYank
+        autocmd!
+        autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
+    augroup END
+endif
+
+autocmd TextYankPost * call system('~/bin/win32yank.exe -i --crlf', @")
+
+function! Paste(mode)
+    let @" = system('~/bin/win32yank.exe -o --lf')
+    return a:mode
+endfunction
+
+map <expr> p Paste('p')
+map <expr> P Paste('P')
+vmap <Tab> >
+vmap <S-Tab> <
+
+nnoremap <C-a> ggVG
+inoremap <C-a> <Esc>ggVG
+set re=0

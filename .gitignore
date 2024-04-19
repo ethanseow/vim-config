@@ -1,9 +1,8 @@
 # Ignore all folders
+*
 */
-!nvim/
-!tmux/
+!nvim/**
+!tmux/tmux.conf
 
 # Ignore all files except .gitignore
-*
 !.gitignore
-
