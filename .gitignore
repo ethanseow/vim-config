@@ -3,6 +3,7 @@
 */
 !nvim/**
 !tmux/tmux.conf
+!tmux/tmux-resurrect
 
 # Ignore all files except .gitignore
 !.gitignore

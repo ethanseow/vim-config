@@ -22,10 +22,9 @@ vim.cmd([[Plug 'vim-airline/vim-airline-themes']])
 vim.cmd([[Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' } ]])
 vim.cmd([[Plug 'nvim-lua/plenary.nvim']])
 vim.cmd([[Plug 'sainnhe/sonokai']])
-vim.cmd([[Plug 'windwp/nvim-autopairs']])
 vim.cmd([[Plug 'neoclide/coc.nvim', {'branch': 'release'}]])
 vim.cmd([[Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}]])
-vim.cmd([[cal plug#end()]])
+vim.cmd([[call plug#end()]])
 
 --
 -- vim.cmd([[Plug 'vim-airline/vim-airline-themes']])
@@ -36,12 +35,12 @@ vim.cmd([[
 let g:sonokai_style = 'andromeda'
 let g:sonokai_better_performance = 1
 colorscheme sonokai
-set clipboard=unnamedplus
+set clipboard+=unnamedplus
 ]])
 
 -- ctrl+s
-vim.keymap.set("n", "<C-s>", ":update<CR>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-s>", "<Esc> :update<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-s>", ":update <CR>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-s>", "<Esc> :update <CR>", { noremap = true, silent = true })
 -- quit and save all
 vim.keymap.set("n", "<C-q>", ":wqa! <CR>", { noremap = true, silent = true })
 vim.keymap.set("i", "<C-q>", "<Esc> :wqa!<CR>", { noremap = true, silent = true })
@@ -99,11 +98,19 @@ vim.cmd(
 	[[
 augroup FormatAutogroup
 autocmd!
-  autocmd BufWritePost * FormatWrite
+  autocmd BufWritePost * Format
 augroup END
 ]],
 	false
 )
+
+--
+-- vim.cmd([[Plug 'neoclide/coc.nvim', {'branch': 'release'}]])
+--
+-- list of extensions for coc.nvim
+vim.cmd([[
+let g:coc_global_extensions = ['coc-clangd', 'coc-pairs', 'coc-pyright','coc-tsserver', '@yaegassy/coc-tailwindcss3', 'coc-snippets']
+]])
 
 --
 -- vim.cmd([[Plug 'nvim-treesitter/nvim-treesitter']])
@@ -129,3 +136,30 @@ require("nvim-treesitter.configs").setup({
 		autotag = { enable = true },
 	},
 })
+
+vim.keymap.set(
+	"i",
+	"<TAB>",
+	'<cmd>lua require("coc")._select_confirm()<CR>',
+	{ expr = true, noremap = true, silent = true }
+)
+vim.keymap.set(
+	"i",
+	"<TAB>",
+	'<cmd>lua require("coc").rpc.request("doKeymap", {"snippets-expand-jump", ""})<CR>',
+	{ expr = true, noremap = true, silent = true }
+)
+vim.keymap.set(
+	"i",
+	"<TAB>",
+	'<cmd>lua CheckBackspace() and "<TAB>" or nil<CR>',
+	{ expr = true, noremap = true, silent = true }
+)
+vim.keymap.set("i", "<TAB>", '<cmd>lua require("coc").refresh()<CR>', { expr = true, noremap = true, silent = true })
+
+function CheckBackspace()
+	local col = vim.fn.col(".") - 1
+	return col == 0 or vim.fn.getline("."):sub(col, col):match("%s") ~= nil
+end
+
+vim.g.coc_snippet_next = "<tab>"
